@@ -1,0 +1,50 @@
+import unittest
+
+# Simulate your logic functions
+def press_key(current, char):
+    return current + str(char)
+
+def clear_screen():
+    return ""
+
+def run_calculation(expr):
+    try:
+        return str(eval(expr))
+    except:
+        return "Error"
+
+def update_history(history, expression, result):
+    history.append(f"{expression} = {result}")
+    if len(history) > 5:
+        history.pop(0)
+    return history
+
+
+class TestCalculator(unittest.TestCase):
+
+    # 1. Test pressing keys
+    def test_press_key(self):
+        self.assertEqual(press_key("12", "3"), "123")
+
+    # 2. Test clear screen
+    def test_clear_screen(self):
+        self.assertEqual(clear_screen(), "")
+
+    # 3. Test correct calculation
+    def test_run_calculation_valid(self):
+        self.assertEqual(run_calculation("2+3"), "5")
+
+    # 4. Test invalid calculation
+    def test_run_calculation_invalid(self):
+        self.assertEqual(run_calculation("2++"), "Error")
+
+    # 5. Test history limit (max 5)
+    def test_history_limit(self):
+        history = []
+        for i in range(6):
+            history = update_history(history, f"{i}+1", str(i+1))
+        self.assertEqual(len(history), 5)
+
+
+if __name__ == "__main__":
+    unittest.main()
